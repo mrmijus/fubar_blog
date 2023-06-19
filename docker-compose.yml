@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  auth_service:
+    build:
+      context: ./authentication_service 
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
+#  blog_service:
+#    build:
+#      context: ./blog_service
+#      dockerfile: Dockerfile
+#    ports:
+#      - 8001:8001
+#
+#  comment_service:
+#    build:
+#      context: ./comment_service
+#      dockerfile: Dockerfile
+#    ports:
+#      - 8002:8002
