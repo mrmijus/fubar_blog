@@ -1,11 +1,17 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, APIRouter
+from api import router as api_router
 
 app = FastAPI()
+monitoring_router = APIRouter()
 
 
-@app.get("/healthcheck")
-async def root():
+@monitoring_router.get("/healthcheck")
+def healthcheck():
     return {"message": "HEALTH OK"}
+
+
+app.include_router(monitoring_router)
+app.include_router(api_router)
 
 
 if __name__ == "__main__":
