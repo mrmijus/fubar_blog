@@ -1,7 +1,10 @@
 from typing import List
 
+from fastapi import Depends
 from sqlalchemy.orm import Session
 from models import User
+from database import get_db
+
 
 class UserRepository:
     def __init__(self, db: Session):
@@ -10,17 +13,21 @@ class UserRepository:
     def get_user_by_id(self, user_id: int) -> User | None:
         return self.db.query(User).filter(User.id == user_id).first()
 
-    def find_user_by_email(self, email: str) -> User | None:
+    def get_user_by_email(self, email: str) -> User | None:
         return self.db.query(User).filter(User.email == email).first()
 
     def get_all_users(self) -> List[User] | None:
         return self.db.query(User).all()
 
+    def create_user(self, user: User) -> User:
+        user = User(username=user.username, email=user.email, password=user.password)
+        self.db.add(user)
+        self.db.commit()
+        self.db.refresh(user)
+        return user
 
-# TODO: Add a function to auth a user by username and password
-# TODO: Add a function to create a new user
-# TODO: Add a function to get all users
-# TODO: Add a function to get all users by role
-# TODO: Add a function to get all users by is_active
-# TODO: Add a function to update a user by id
-# TODO: Add a function to delete a user by id
+
+def get_user_repository(database=Depends(get_db)) -> UserRepository:
+    return UserRepository(database)
+
+

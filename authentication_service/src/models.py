@@ -13,13 +13,19 @@ class Role(Enum):
     ADMIN = "admin"
 
 
+class UserStatus(Enum):
+    ACTIVE = "active"
+    INACTIVE = "inactive"
+    SUSPENDED = "suspended"
+
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
-    status = Column(Boolean, default=True)
+    status = Column(Boolean, default=UserStatus.ACTIVE.value)
     created_at = Column(DateTime, default=datetime.utcnow)
     user_role = Column(String, default=Role.USER.value)
 
@@ -29,5 +35,7 @@ class User(Base):
         return False
 
     def __repr__(self):
-        return f"<User(id={self.id}, username={self.username}, email={self.email}, is_active={self.is_active}, " \
-               f"created_at={self.created_at}, user_role={self.user_role})>"
+        return (
+            f"<User(id={self.id}, username={self.username}, email={self.email}, is_active={self.is_active}, "
+            f"created_at={self.created_at}, user_role={self.user_role})>"
+        )

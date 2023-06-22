@@ -3,11 +3,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 
+from config import config
 
-# Establish connection
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:password@localhost:5432/fubar"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(config.database_url)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
